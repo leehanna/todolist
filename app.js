@@ -57,6 +57,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
+mongoose.connect('mongodb://heroku_app37347469:heroku_app37347469@ds041432.mongolab.com:41432/heroku_app37347469');
+
 // define model
     var Todo = mongoose.model('Todo', {
         text : String
