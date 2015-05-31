@@ -1,14 +1,12 @@
 <!-- index.html -->
 <!doctype html>
 
-<!-- ASSIGN OUR ANGULAR MODULE -->
 <html ng-app="todolist">
 <head>
-    <!-- META -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
 
-    <title>Todos</title>
+    <title>Todo</title>
 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
@@ -29,16 +27,14 @@
     <script src="core.js"></script>
 
 </head>
-<!-- SET THE CONTROLLER AND GET ALL TODOS -->
+
 <body ng-controller="mainController">
-    <!-- HEADER AND TODO COUNT -->
     <div class="jumbotron text-center">
-        <h1>My To-dos  <span class="label label-info">{{ todos.length }}</span></h1>
+        <h1>Today's To-dos</h1>
     </div>
 
     <div class="container">
 
-        <!-- TODO LIST -->
         <div id="todo-list" class="row">
             <div class="col-sm-6 col-sm-offset-3">
 
@@ -46,7 +42,9 @@
                     <form class="form-inline">
                         <div class="form-group">
                             <div class="input-group">
+                                <!-- text input field temporarily stroed in formData to be passed to creation json message -->
                                 <input id="form1" type="text" class="form-control" placeholder="Enter new task." ng-model="formData.text" ng-change="update($index)">
+                                <!-- add button creates a new Todo -->
                                 <span class="input-group-btn">
                                     <button id="addButton" type="submit" class="btn btn-primary btn-primary" ng-click="createTodo()">Add</button>
                                 </span>
@@ -57,6 +55,7 @@
 
                 <div id="todo-element" ng-repeat="todo in todos.slice().reverse()">
                     <div id="checkbox-container">
+                        <!-- update todo.done according to the checkbox and pass the todo object into markAsDone -->
                         <input type="checkbox" ng-model="todo.done" ng-change="markAsDone(todo)">{{ todo.text }}
                     </div>
                     <button type="button" class="close" ng-click="deleteTodo(todo._id)"><span>&times;</span></button>

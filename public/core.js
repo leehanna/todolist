@@ -1,9 +1,9 @@
 var todolist = angular.module('todolist', []);
 
 function mainController($scope, $http) {
+    // formData temporarily holds what is currently inputted into the text field for creation
     $scope.formData = {};
 
-    // when landing on the page, get all todos and show them
     $http.get('/todos')
         .success(function(data) {
             $scope.todos = data;
@@ -13,11 +13,10 @@ function mainController($scope, $http) {
             console.log('Error: ' + data);
         });
 
-    // when submitting the add form, send the text to the node API
     $scope.createTodo = function() {
         $http.post('/todos', $scope.formData)
             .success(function(data) {
-                $scope.formData = {}; // clear the form so our user is ready to enter another
+                $scope.formData = {}; // clear out formData (text field)
                 $scope.todos = data;
                 console.log(data);
             })
@@ -37,7 +36,6 @@ function mainController($scope, $http) {
     		});
     };
 
-    // delete a todo after checking it
     $scope.deleteTodo = function(id) {
         $http.delete('/todos/' + id)
             .success(function(data) {

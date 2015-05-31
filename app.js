@@ -1,3 +1,4 @@
+// set up stuff
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -13,12 +14,9 @@ var app = express();
 
 var port = process.env.PORT || 8080;
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,6 +36,7 @@ mongoose.connect(uristring, function (err, res) {
   }
 });
 
+// declare Todo model in mongoose/mongoDB
 var Todo = mongoose.model('Todo', {
     text : String,
     done : Boolean
@@ -52,7 +51,7 @@ app.get('/todos', function(request, response) {
     });
 });
 
-// create todo and send back all todos after creation
+// create todo and respond with all todos
 app.post('/todos', function(request, response) {
     Todo.create({
         text : request.body.text,
@@ -70,6 +69,7 @@ app.post('/todos', function(request, response) {
 
 });
 
+// update todo and respond with all todos
 app.put('/todos/:todo_id', function(request, response) {
     Todo.findByIdAndUpdate( request.params.todo_id,  request.body, function(error, todo) {
             if (error)
@@ -100,6 +100,7 @@ app.delete('/todos/:todo_id', function(request, response) {
     });
 });
 
+// load index.html as main page
 app.get('*', function(request, response) {
     response.sendfile('./public/index.html');
 });
