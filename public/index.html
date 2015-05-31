@@ -11,15 +11,14 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
     <style>
-        html                    { overflow-y:scroll; }
-        #todo-list              { margin-top: 30px; margin-bottom:30px; }
-        #todo-form              { margin: 0 auto; padding-bottom: 10px; }
-        #todo-element           { padding-top: 8px; padding-bottom: 8px; display:block; }
-        #todo-element button    { display:inline; }
-        #todo-label             { display:inline;}
-        #checkbox-container     { display:inline; }
+        html { overflow-y:scroll; }
+        #todo-list { margin-top: 30px; margin-bottom:30px; }
+        #todo-form { margin: 0 auto; padding-bottom: 10px; }
+        #todo-element { padding-top: 8px; padding-bottom: 8px; display:block; }
+        #todo-element button { display:inline; }
+        #todo-label { display:inline;}
+        #checkbox-container { display:inline; }
         #checkbox-container input { margin-right: 10px; }
-        #done-label             { color:grey;}
     </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
@@ -30,7 +29,7 @@
 
 <body ng-controller="mainController">
     <div class="jumbotron text-center">
-        <h1>Today's To-dos</h1>
+        <h1>Just do it.</h1>
     </div>
 
     <div class="container">
@@ -43,7 +42,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <!-- text input field temporarily stroed in formData to be passed to creation json message -->
-                                <input id="form1" type="text" class="form-control" placeholder="Enter new task." ng-model="formData.text" ng-change="update($index)">
+                                <input id="form1" type="text" class="form-control" placeholder="What do you have to do today?" ng-model="formData.text" ng-change="update($index)">
                                 <!-- add button creates a new Todo -->
                                 <span class="input-group-btn">
                                     <button id="addButton" type="submit" class="btn btn-primary btn-primary" ng-click="createTodo()">Add</button>
