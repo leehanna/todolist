@@ -5,6 +5,7 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var port = 8080;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -25,6 +26,86 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
+var uristring = 'mongodb://mango:hanna0501@ds041432.mongolab.com:41432/heroku_app37347469'; 
+
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+  console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+  } else {
+  console.log ('Succeeded connecting to: ' + uristring);
+  }
+});
+
+var Todo = mongoose.model('Todo', {
+    text : String,
+    done : Boolean
+});
+
+// display todos
+app.get('/todos', function(request, response) {
+    Todo.find(function(error, todos) {
+        if (error)
+            response.send(error)
+        response.json(todos);
+    });
+});
+
+// create todo and send back all todos after creation
+app.post('/todos', function(request, response) {
+    Todo.create({
+        text : request.body.text,
+        done : false
+    }, function(error, todo) {
+        if (error)
+            response.send(error);
+
+        Todo.find(function(error, todos) {
+            if (error)
+                response.send(error)
+            response.json(todos);
+        });
+    });
+
+});
+
+app.put('/todos/:todo_id', function(request, response) {
+    Todo.findByIdAndUpdate( request.params.todo_id,  request.body, function(error, todo) {
+            if (error)
+                response.send(error);
+
+            Todo.find(function(error, todos) {
+                if (error)
+                    response.send(error)
+                response.json(todos);
+            });
+        }
+    ); 
+})
+
+// delete a todo
+app.delete('/todos/:todo_id', function(request, response) {
+    Todo.remove({
+        _id : request.params.todo_id
+    }, function(error, todo) {
+        if (error)
+            response.send(error);
+
+        Todo.find(function(error, todos) {
+            if (error)
+                response.send(error)
+            response.json(todos);
+        });
+    });
+});
+
+app.get('*', function(request, response) {
+    response.sendfile('./public/index.html');
+});
+
+app.listen(port, function(){
+  console.log('Server listening on port ' + port)
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -56,65 +137,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-mongoose.connect('mongodb://heroku_app37347469:heroku_app37347469@ds041432.mongolab.com:41432/heroku_app37347469');
-
-// define model
-    var Todo = mongoose.model('Todo', {
-        text : String
-    });
-
-app.get('/api/todos', function(req, res) {
-
-    // use mongoose to get all todos in the database
-    Todo.find(function(err, todos) {
-
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-        if (err)
-            res.send(err)
-
-        res.json(todos); // return all todos in JSON format
-    });
-  });
-
-// create todo and send back all todos after creation
-app.post('/api/todos', function(req, res) {
-
-    // create a todo, information comes from AJAX request from Angular
-    Todo.create({
-        text : req.body.text,
-        done : false
-    }, function(err, todo) {
-        if (err)
-            res.send(err);
-
-        // get and return all the todos after you create another
-        Todo.find(function(err, todos) {
-            if (err)
-                res.send(err)
-            res.json(todos);
-        });
-    });
-
-});
-
-// delete a todo
-app.delete('/api/todos/:todo_id', function(req, res) {
-    Todo.remove({
-        _id : req.params.todo_id
-    }, function(err, todo) {
-        if (err)
-            res.send(err);
-
-        // get and return all the todos after you create another
-        Todo.find(function(err, todos) {
-            if (err)
-                res.send(err)
-            res.json(todos);
-        });
-    });
-});
-
 
 
 module.exports = app;

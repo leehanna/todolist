@@ -1,0 +1,69 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="todolist">
+<head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+    <title>Todos</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <style>
+        html                    { overflow-y:scroll; }
+        #todo-list              { margin-top: 30px; margin-bottom:30px; }
+        #todo-form              { margin: 0 auto; padding-bottom: 10px; }
+        #todo-element           { padding-top: 8px; padding-bottom: 8px; display:block; }
+        #todo-element button    { display:inline; }
+        #todo-label             { display:inline;}
+        #checkbox-container     { display:inline; }
+        #checkbox-container input { margin-right: 10px; }
+        #done-label             { color:grey;}
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script src="core.js"></script>
+
+</head>
+<!-- SET THE CONTROLLER AND GET ALL TODOS -->
+<body ng-controller="mainController">
+    <!-- HEADER AND TODO COUNT -->
+    <div class="jumbotron text-center">
+        <h1>My To-dos  <span class="label label-info">{{ todos.length }}</span></h1>
+    </div>
+
+    <div class="container">
+
+        <!-- TODO LIST -->
+        <div id="todo-list" class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+
+                <div id="todo-form" class="row">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input id="form1" type="text" class="form-control" placeholder="Enter new task." ng-model="formData.text" ng-change="update($index)">
+                                <span class="input-group-btn">
+                                    <button id="addButton" type="submit" class="btn btn-primary btn-primary" ng-click="createTodo()">Add</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="todo-element" ng-repeat="todo in todos.slice().reverse()">
+                    <div id="checkbox-container">
+                        <input type="checkbox" ng-model="todo.done" ng-change="markAsDone(todo)">{{ todo.text }}
+                    </div>
+                    <button type="button" class="close" ng-click="deleteTodo(todo._id)"><span>&times;</span></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
