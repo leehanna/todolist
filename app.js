@@ -5,7 +5,6 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var port = 8080;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -101,10 +100,6 @@ app.delete('/todos/:todo_id', function(request, response) {
 
 app.get('*', function(request, response) {
     response.sendfile('./public/index.html');
-});
-
-app.listen(port, function(){
-  console.log('Server listening on port ' + port)
 });
 
 // catch 404 and forward to error handler
